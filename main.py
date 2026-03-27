@@ -6,8 +6,8 @@ app = FastAPI(title="Carbon Intelligence API")
 #Load datasets
 historical_emission = pd.read_csv('historical_co2_emission.csv')
 forecast_emission = pd.read_csv('future_co2_emission.csv')
-carbon_credit_price_forecast = pd.read_csv('carbon_price_forecast.csv')
-historical_carbon_credit_price = pd.read_csv('historical_carbon_price.csv')
+carbon_credit_price_forecast = pd.read_csv('carbon_credit_price_forecast.csv')
+historical_carbon_credit_price = pd.read_csv('historical_carbon_credit_price.csv')
 
 @app.get('/')
 def home():
