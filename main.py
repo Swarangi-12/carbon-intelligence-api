@@ -50,7 +50,7 @@ import os
 
 api_key = os.getenv("GROQ_API_KEY")
 
-groq_client = Groq(api_key=GROQ_API_KEY, timeout=20.0)
+groq_client = Groq(api_key=api_key, timeout=20.0)
 
 def generate_recommendations(
     current: float,
