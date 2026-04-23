@@ -57,51 +57,57 @@ def generate_recommendations(
     predicted: float,
     country: str = "India",
     year: int = 2025,
-    energy_mix: Optional[Dict[str, float]] = None,
 ) -> Dict[str, Any]:
     try:
         increase = predicted - current
         percent = (increase / current) * 100 if current else 0.0
 
-        if energy_mix is None:
-            energy_mix = {"coal": 60, "solar": 10, "gas": 20, "other": 10}
-
-        energy_mix_str = ", ".join([f"{k}: {v}%" for k, v in energy_mix.items()])
 
         prompt = f"""
-Write a professional insight report for a Carbon Market Intelligence Platform for {country} ({year}).
-Ground the analysis in the energy mix and the emissions change.
+You are a senior climate policy analyst writing for a Carbon Market Intelligence dashboard.
+Analyze the following CO2 emission forecast data for {country} and generate a structured insight report.
 
-Inputs:
+Emission Data:
+- Country: {country}
+- Year: {year}
 - Current CO2 emissions: {current} Gt
 - Predicted CO2 emissions: {predicted} Gt
 - Absolute increase: {increase:.2f} Gt
 - Percent increase: {percent:.2f}%
-- Energy mix (approx.): {energy_mix_str}
 
-IMPORTANT FORMATTING RULES:
-- Do NOT use any markdown (no **, no ##, no *, no backticks)
-- Use plain text only
-- Follow this EXACT structure, no extra sections, no extra lines:
-- Keep it concise for a dashboard:
-  - ANALYSIS must be exactly 3 short sentences (max ~18 words each)
-  - Each recommended action must be one short line (max ~14 words)
-  - IMPACT NOTE must be max ~18 words
-  - Total output should be under ~900 characters
-  - The first sentence of ANALYSIS must explicitly mention:
-    "{country}'s predicted CO2 emissions increase of {increase:.2f} Gt by {year}, representing a {percent:.2f}% rise."
+Your job:
+1. Determine severity based on your expert analysis of:
+   - The percent increase in context of {country}'s current development stage
+   - How this trajectory compares to global climate targets (1.5°C pathway)
+   - Whether this rise is sudden or part of a gradual trend
+   - The urgency of intervention needed
 
-SEVERITY: <one of LOW | MEDIUM | HIGH | CRITICAL>
+2. Write the report in this EXACT structure with no deviations:
 
-ANALYSIS: <exactly 3 short sentences explaining why emissions are rising, grounded in the energy mix and {country} context>
+SEVERITY: <LOW | MEDIUM | HIGH | CRITICAL>
+
+ANALYSIS:
+Sentence 1: State the exact emission figures and percent rise for {country} in {year}.
+Sentence 2: Identify the most likely cause of this rise based on {country}'s known energy and industrial patterns.
+Sentence 3: Explain what this means for {country}'s climate targets or commitments.
 
 RECOMMENDED ACTIONS:
-1) <specific action>
-2) <specific action>
-3) <specific action>
+1) <Most impactful action specific to {country}'s situation>
+2) <Policy or infrastructure action to address root cause>
+3) <Monitoring or efficiency measure for near-term impact>
 
-IMPACT NOTE: <1 sentence describing consequences of no action>
+IMPACT NOTE: <What happens specifically to {country} if no action is taken in 2 years>
+
+STRICT RULES:
+- Plain text only, zero markdown (no **, no ##, no *, no backticks)
+- No extra sections, no greetings, no disclaimers
+- Every sentence must be specific to {country}, not generic
+- Max 18 words per sentence in ANALYSIS
+- Max 14 words per recommended action
+- Max 18 words in IMPACT NOTE
+- Do not repeat the same word or phrase twice in the output
 """
+
 
         completion = groq_client.chat.completions.create(
             model="llama-3.1-8b-instant",
