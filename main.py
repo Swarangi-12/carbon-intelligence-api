@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
 from pydantic import BaseModel
 import re
@@ -6,6 +7,15 @@ from typing import Any, Dict, Optional
 from groq import Groq
 
 app = FastAPI(title="Carbon Intelligence API")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 class EmissionInput(BaseModel):
     current: float
     predicted: float
