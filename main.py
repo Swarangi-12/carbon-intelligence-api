@@ -19,9 +19,9 @@ app.add_middleware(
 class EmissionInput(BaseModel):
     current: float
     predicted: float
-    country: str = "India"
     year: int = 2025
-
+    country: str = "India"
+    
 #Load datasets
 historical_emission = pd.read_csv('historical_co2_emission.csv')
 forecast_emission = pd.read_csv('future_co2_emission.csv')
