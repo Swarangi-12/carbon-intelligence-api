@@ -65,8 +65,9 @@ groq_client = Groq(api_key=api_key, timeout=20.0)
 def generate_recommendations(
     current: float,
     predicted: float,
-    country: str = "India",
-    year: int
+    year: int,
+    country: str = "India"
+    
 ) -> Dict[str, Any]:
     try:
         change = predicted - current
