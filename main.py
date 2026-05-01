@@ -110,7 +110,7 @@ RECOMMENDED ACTIONS:
 2) <Policy or infrastructure action to address root cause>
 3) <Monitoring or efficiency measure for near-term impact>
 
-IMPACT NOTE: <What happens specifically to {country} if no action is taken in 2 years>
+IMPACT NOTE: <If emissions are increasing, describe consequences of inaction. If decreasing, describe risks of not sustaining this trend>
 
 STRICT RULES:
 - Plain text only, zero markdown (no **, no ##, no *, no backticks)
