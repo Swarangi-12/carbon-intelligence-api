@@ -115,6 +115,7 @@ IMPACT NOTE: <If emissions are increasing, describe consequences of inaction. If
 STRICT RULES:
 - Plain text only, zero markdown (no **, no ##, no *, no backticks)
 - No extra sections, no greetings, no disclaimers
+- Use simple, clear, and easy-to-understand English. Avoid complex or technical words.
 - Every sentence must be specific to {country}, not generic
 - Max 18 words per sentence in ANALYSIS
 - Max 14 words per recommended action
