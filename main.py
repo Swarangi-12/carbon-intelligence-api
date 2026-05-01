@@ -19,7 +19,7 @@ app.add_middleware(
 class EmissionInput(BaseModel):
     current: float
     predicted: float
-    year: int = 2025
+    year: int
     country: str = "India"
     
 #Load datasets
@@ -66,11 +66,14 @@ def generate_recommendations(
     current: float,
     predicted: float,
     country: str = "India",
-    year: int = 2025,
+    year: int
 ) -> Dict[str, Any]:
     try:
-        increase = predicted - current
-        percent = (increase / current) * 100 if current else 0.0
+        change = predicted - current
+        percent = (change / current) * 100 if current else 0.0
+        trend = "increase" if change >= 0 else "decrease"
+        abs_change = abs(change)
+        abs_percent = abs(percent)
 
 
         prompt = f"""
@@ -82,12 +85,12 @@ Emission Data:
 - Year: {year}
 - Current CO2 emissions: {current} Gt
 - Predicted CO2 emissions: {predicted} Gt
-- Absolute increase: {increase:.2f} Gt
-- Percent increase: {percent:.2f}%
+- Absolute {trend}: {abs_change:.2f} Gt
+- Percent {trend}: {abs_percent:.2f}%
 
 Your job:
 1. Determine severity based on your expert analysis of:
-   - The percent increase in context of {country}'s current development stage
+   - The percent change (increase or decrease) in context of {country}'s current development stage
    - How this trajectory compares to global climate targets (1.5°C pathway)
    - Whether this rise is sudden or part of a gradual trend
    - The urgency of intervention needed
@@ -116,6 +119,7 @@ STRICT RULES:
 - Max 14 words per recommended action
 - Max 18 words in IMPACT NOTE
 - Do not repeat the same word or phrase twice in the output
+- If emissions decrease, explicitly describe it as a decrease and never use the word "increase" with negative values.
 """
 
 
@@ -164,8 +168,9 @@ STRICT RULES:
                 severity = "LOW"
 
         return {
-            "increase": round(increase, 2),
-            "percent_increase": round(percent, 2),
+            "change": round(change, 2),
+            "percent_change": round(percent, 2),
+            "trend": trend,
             "severity": severity,
             "insight": insight
         }
