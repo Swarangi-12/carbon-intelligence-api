@@ -49,7 +49,7 @@ def get_emission_forecast():
 def get_carbon_credit_price(months: int = 12):
     return carbon_credit_price_forecast.head(months).to_dict(orient='records')
 
-@app.get('/historical__price')
+@app.get('/historical_price')
 def get_historical_price():
     return historical_carbon_credit_price.to_dict(orient='records')
 
